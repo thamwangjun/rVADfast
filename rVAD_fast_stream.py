@@ -3,12 +3,14 @@ import sys
 import code
 import pyaudio
 import wave
+import numpy
+import scipy
 
 
-CHUNK = 1024 ##number of frames in buffer
+CHUNK = 48000 ##number of frames in buffer
 FORMAT = pyaudio.paInt16
 CHANNELS = 1 #each frame contents 1 sample of audio --> chunk -> 1024 samples in buffer
-RATE = 44100 #no of samples per Seconds
+RATE = 48000 #no of samples per Seconds
 dur = 5 # the duration of recording audio chunck (seconds)
 
 def record():
@@ -26,7 +28,7 @@ def record():
 
     try:
          while True:
-             data = stream.read(CHUNK)
+             data = stream.read(CHUNK, exception_on_overflow=False)
              frames.append(data)
              cont = cont + CHUNK
              if cont >= dur*RATE:  #for dur seconds audio
